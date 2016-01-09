@@ -7,14 +7,16 @@ myApp.controller('MenuController', ['$scope', 'menuFactory', function ($scope, m
   $scope.tab = 1;
   $scope.filtText = '';
   $scope.showDetails = false;
-
-  $scope.dishes = {};
-  menuFactory.getDishes()
-    .then(
-      function (response) {
-        $scope.dishes = response.data;
-      }
-    );
+  $scope.showMenu = false;
+  $scope.message = "Loading ...";
+  menuFactory.getDishes().query(
+    function (response) {
+      $scope.dishes = response;
+      $scope.showMenu = true;
+    },
+    function (response) {
+      $scope.message = "Error: " + response.status + " " + response.statusText;
+    });
 
   $scope.select = function (setTab) {
     $scope.tab = setTab;
@@ -88,20 +90,26 @@ myApp.controller('FeedbackController', ['$scope', function ($scope) {
         }])
 
 myApp.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function ($scope, $stateParams, menuFactory) {
-
-  var dish = menuFactory.getDish(parseInt($stateParams.id, 10));
-
   $scope.dish = {};
-  menuFactory.getDish(parseInt($stateParams.id, 10))
-    .then(
+  $scope.showDish = false;
+  $scope.message = "Loading ...";
+  $scope.dish =
+    menuFactory.getDishes().get({
+      id: parseInt($stateParams.id, 10)
+    })
+    .$promise.then(
       function (response) {
-        $scope.dish = response.data;
+        $scope.dish = response;
         $scope.showDish = true;
+      },
+      function (response) {
+        $scope.message = "Error: " + response.status + " " + response.statusText;
       }
     );
+
         }])
 
-myApp.controller('DishCommentController', ['$scope', function ($scope) {
+myApp.controller('DishCommentController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
 
   $scope.mycomment = {
     rating: 5,
@@ -110,15 +118,13 @@ myApp.controller('DishCommentController', ['$scope', function ($scope) {
     date: ""
   };
 
-  $scope.submitComment = function () {
-
+  $scope.submitComment = function() {
     $scope.mycomment.date = new Date().toISOString();
     console.log($scope.mycomment);
-
     $scope.dish.comments.push($scope.mycomment);
 
+    menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
     $scope.commentForm.$setPristine();
-
     $scope.mycomment = {
       rating: 5,
       comment: "",
@@ -133,16 +139,20 @@ myApp.controller('DishCommentController', ['$scope', function ($scope) {
 myApp.controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory', function ($scope, menuFactory, corporateFactory) {
 
   $scope.leader = corporateFactory.getLeader(3);
-
-  $scope.dish = {};
-  menuFactory.getDish(0)
-    .then(
+  $scope.showDish = false;
+  $scope.message = "Loading ...";
+  $scope.dish = menuFactory.getDishes().get({
+      id: 0
+    })
+    .$promise.then(
       function (response) {
-        $scope.dish = response.data;
+        $scope.dish = response;
         $scope.showDish = true;
+      },
+      function (response) {
+        $scope.message = "Error: " + response.status + " " + response.statusText;
       }
     );
-
   $scope.promotion = menuFactory.getPromotion(0);
 
 
