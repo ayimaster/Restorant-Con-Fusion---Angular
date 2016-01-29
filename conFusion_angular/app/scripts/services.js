@@ -1,8 +1,8 @@
 'use strict';
 
-var myApp = angular.module('confusionApp')
-myApp.constant("baseURL", "http://localhost:3000/")
-myApp.service('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+angular.module('confusionApp')
+.constant("baseURL", "http://localhost:3000/")
+.service('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
 
   var promotions = [
@@ -34,7 +34,7 @@ myApp.service('menuFactory', ['$resource', 'baseURL', function ($resource, baseU
 
 }])
 
-myApp.factory('corporateFactory', function () {
+.factory('corporateFactory', function () {
 
   var corpfac = {};
 

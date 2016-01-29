@@ -1,8 +1,8 @@
 'use strict';
 
-var myApp = angular.module('confusionApp')
+angular.module('confusionApp')
 
-myApp.controller('MenuController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+.controller('MenuController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
 
   $scope.tab = 1;
   $scope.filtText = '';
@@ -11,7 +11,7 @@ myApp.controller('MenuController', ['$scope', 'menuFactory', function ($scope, m
   $scope.message = "Loading ...";
   menuFactory.getDishes().query(
     function (response) {
-      $scope.dishes = response;
+      $scope.dishes = response.data;
       $scope.showMenu = true;
     },
     function (response) {
@@ -41,7 +41,7 @@ myApp.controller('MenuController', ['$scope', 'menuFactory', function ($scope, m
   };
         }])
 
-myApp.controller('ContactController', ['$scope', function ($scope) {
+.controller('ContactController', ['$scope', function ($scope) {
 
   $scope.feedback = {
     mychannel: "",
@@ -64,7 +64,7 @@ myApp.controller('ContactController', ['$scope', function ($scope) {
 
         }])
 
-myApp.controller('FeedbackController', ['$scope', function ($scope) {
+.controller('FeedbackController', ['$scope', function ($scope) {
 
   $scope.sendFeedback = function () {
 
@@ -89,8 +89,8 @@ myApp.controller('FeedbackController', ['$scope', function ($scope) {
   };
         }])
 
-myApp.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function ($scope, $stateParams, menuFactory) {
-  $scope.dish = {};
+.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function ($scope, $stateParams, menuFactory) {
+  
   $scope.showDish = false;
   $scope.message = "Loading ...";
   $scope.dish =
@@ -109,7 +109,7 @@ myApp.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory
 
         }])
 
-myApp.controller('DishCommentController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+.controller('DishCommentController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
 
   $scope.mycomment = {
     rating: 5,
@@ -131,12 +131,12 @@ myApp.controller('DishCommentController', ['$scope', 'menuFactory', function ($s
       author: "",
       date: ""
     };
-  }
+  };
         }])
 
 // implement the IndexController and About Controller here
 
-myApp.controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory', function ($scope, menuFactory, corporateFactory) {
+.controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory', function ($scope, menuFactory, corporateFactory) {
 
   $scope.leader = corporateFactory.getLeader(3);
   $scope.showDish = false;
@@ -158,7 +158,7 @@ myApp.controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory'
 
 }])
 
-myApp.controller('AboutController', ['$scope', 'corporateFactory', function ($scope, corporateFactory) {
+.controller('AboutController', ['$scope', 'corporateFactory', function ($scope, corporateFactory) {
   $scope.leaders = corporateFactory.getLeaders;
   console.log($scope.leaders);
 }]);
