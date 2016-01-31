@@ -9,7 +9,7 @@ angular.module('confusionApp')
   $scope.showDetails = false;
   $scope.showMenu = false;
   $scope.message = "Loading ...";
-  menuFactory.getDishes().query(
+  $scope.dishes = menuFactory.getDishes().query(
     function (response) {
       $scope.dishes = response.data;
       $scope.showMenu = true;
